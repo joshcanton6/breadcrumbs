@@ -4,6 +4,8 @@
     --spotify-black: #191414;
 }
 
+/* #region Type selectors */
+
 a {
     color: var(--spotify-green);
 }
@@ -13,3 +15,13 @@ body {
     color: var(--spotify-white);
     font-family: sans-serif;
 }
+
+/* #endregion Type selectors */
+
+/* #region Class selectors */
+
+/* #endregion Class selectors */
+
+/* #region ID selectors */
+
+/* #endregion ID selectors */
