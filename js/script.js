@@ -22,12 +22,10 @@ function login() {
 async function redirect() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has("error")) {
-        document.getElementById("redirect_message").innerHTML = "Error: " + urlParams.get("error");
+        document.getElementById("redirect-message").innerHTML = "Error: " + urlParams.get("error");
     }
 
     if (urlParams.has("code")) {
-        document.getElementById("redirect_message").innerHTML = "Login successful, redirecting...";
-
         var token = await fetch("https://accounts.spotify.com/api/token", {
             method: "POST",
             body: "grant_type=authorization_code" +
