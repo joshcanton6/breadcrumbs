@@ -9,7 +9,8 @@ function login() {
         " playlist-read-collaborative" +
         " playlist-modify-public" +
         " playlist-modify-private" +
-        " ugc-image-upload";
+        " ugc-image-upload" +
+        " user-top-read";
 
     window.location.href = "https://accounts.spotify.com/authorize" +
         "?client_id=" + client_id +
