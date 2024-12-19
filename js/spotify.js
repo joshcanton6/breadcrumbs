@@ -23,7 +23,7 @@ function getAlbumTracks(id, market=null, limit=20, offset=0) {
  * Get Spotify catalog information about an artist's albums.
  * 
  * @param {string} id The Spotify ID of the artist.
- * @param {string} include_groups A comma-separated list of keywords that will be used to filter the response. If not supplied, all album types will be returned. Valid values are: `album`, `single`, `appears_on`, `compilation`.
+ * @param {string} include_groups A comma-separated list of keywords that will be used to filter the response. If not supplied, all album types will be returned. Valid values are: `album`, `single`, `appears_on`, and `compilation`.
  * @param {string} market An ISO 3166-1 alpha-2 country code. If a country code is specified, only content that is available in that market will be returned. If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
  * @param {number} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
  * @param {number} offset The index of the first item to return. Default: 0 (the first item). Use with `limit` to get the next set of items.
