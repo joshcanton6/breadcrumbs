@@ -115,20 +115,7 @@ function getUsersTopItems(type, time_range="medium_term", limit=20, offset=0) {
  * @param {Promise} result A `Promise` containing the HTTP `Response` to the request.
  * @returns A JSON object
  */
-function parseJSON(result) {
-    /*
-    return result.then(
-        (response) => response.json()
-    ).then(
-        (json) => JSON.parse(JSON.stringify(json))
-    );
-    */
-
-    return result.then((response) => response.json());
-}
-
-function testButton() {
-    getUsersTopItems("artists", "Short_term", 1).then((data) => {
-        alert(JSON.stringify(data));
-    })
+async function parseJSON(result) {
+    const response = await result;
+    return response.json();
 }
