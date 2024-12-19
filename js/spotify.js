@@ -127,6 +127,6 @@ function parseJSON(result) {
     return result.then((response) => response.json());
 }
 
-async function testButton() {
-    alert(await getUsersTopItems("artists", "Short_term", 1));
+function testButton() {
+    alert(getUsersTopItems("artists", "Short_term", 1));
 }
