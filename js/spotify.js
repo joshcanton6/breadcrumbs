@@ -116,13 +116,19 @@ function getUsersTopItems(type, time_range="medium_term", limit=20, offset=0) {
  * @returns A JSON object
  */
 function parseJSON(result) {
+    /*
     return result.then(
         (response) => response.json()
     ).then(
         (json) => JSON.parse(JSON.stringify(json))
     );
+    */
+
+    return result.then((response) => response.json());
 }
 
 function testButton() {
-    alert(getUsersTopItems("artists", "short_term", 1));
+    getUsersTopItems("artists", "Short_term", 1).then((data) => {
+        alert(JSON.stringify(data));
+    })
 }
