@@ -126,4 +126,7 @@ function parseJSON(result) {
 
     return result.then((response) => response.json());
 }
+
+function testButton() {
+    alert(getUsersTopItems("artists", "Short_term", 1));
 }
