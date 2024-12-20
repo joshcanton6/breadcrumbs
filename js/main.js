@@ -1,3 +1,5 @@
+import * as Spotify from spotify.js
+
 const home = "https://joshcanton6.github.io/breadcrumbs"
 const client_id = "70d3f1361abf4e1ab9e9e64089fabc36";
 const redirect_uri = home + "/redirect";
