@@ -1,8 +1,14 @@
 import * as Spotify from spotify.js
 
+// #region Constants
+
 const home = "https://joshcanton6.github.io/breadcrumbs"
 const client_id = "70d3f1361abf4e1ab9e9e64089fabc36";
 const redirect_uri = home + "/redirect";
+
+// #endregion Constants
+
+// #region Functions
 
 function login() {
     const scope = "user-read-private" +
@@ -51,3 +57,13 @@ async function redirect() {
         window.location.href = home + "/app";
     }
 }
+
+// #endregion Functions
+
+// #region Handlers
+
+// #endregion Handlers
+
+// #region Listeners
+
+// #endregion Listeners
