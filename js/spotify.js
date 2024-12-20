@@ -113,7 +113,7 @@ export async function getUsersTopItems(token, type, time_range="medium_term", li
 }
 
 /**
- * Parse and the response from an API call.
+ * Parse the response from an API call.
  * @param {Promise} result A `Promise` containing the HTTP `Response` to the request.
  * @returns {Promise<object>} A JSON object
  */
