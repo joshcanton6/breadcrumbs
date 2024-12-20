@@ -40,7 +40,7 @@ async function redirect() {
             method: "POST",
             body: "grant_type=authorization_code" +
                 "&code=" + urlParams.get("code") +
-                "&redirect_uri=" + encodeURIComponent(redirect_uri),
+                "&redirect_uri=" + encodeURIComponent(redirectURI),
             headers: {
                 "content-type": "application/x-www-form-urlencoded",
                 "Authorization": "Basic " + btoa(clientID + ":2f409da2aebf417893ff056f9b98c3ea")
