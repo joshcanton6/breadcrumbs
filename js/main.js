@@ -62,5 +62,6 @@ async function redirect() {
 // #region Listeners
 
 if (spotifyLoginButton) spotifyLoginButton.addEventListener("click", login);
+if (window.location.origin + window.location.pathname == redirectURI) redirect();
 
 // #endregion Listeners
