@@ -11,10 +11,10 @@ const baseURL = "https://api.spotify.com/v1";
  * @param {string} market An ISO 3166-1 alpha-2 country code. If a country code is specified, only content that is available in that market will be returned. If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
  * @param {number} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
  * @param {number} offset The index of the first item to return. Default: 0 (the first item). Use with `limit` to get the next set of items.
- * @returns Pages of tracks
+ * @returns {Promise<object>} Pages of tracks
  */
-export function getAlbumTracks(token, id, market=null, limit=20, offset=0) {
-    return parseJSON(fetch(`${baseURL}/albums/${id}/tracks?market=${market}&limit=${limit}&offset=${offset}`, {
+export async function getAlbumTracks(token, id, market=null, limit=20, offset=0) {
+    return await parseJSON(fetch(`${baseURL}/albums/${id}/tracks?market=${market}&limit=${limit}&offset=${offset}`, {
         method: "GET",
         headers: {
             "Authorization": "Bearer " + token
@@ -30,10 +30,10 @@ export function getAlbumTracks(token, id, market=null, limit=20, offset=0) {
  * @param {string} market An ISO 3166-1 alpha-2 country code. If a country code is specified, only content that is available in that market will be returned. If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
  * @param {number} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
  * @param {number} offset The index of the first item to return. Default: 0 (the first item). Use with `limit` to get the next set of items.
- * @returns Pages of albums
+ * @returns {Promise<object>} Pages of albums
  */
-export function getArtistsAlbums(token, id, include_groups=null, market=null, limit=20, offset=0) {
-    return parseJSON(fetch(`${baseURL}/artists/${id}/albums?include_groups=${include_groups}&market=${market}&limit=${limit}&offset=${offset}`, {
+export async function getArtistsAlbums(token, id, include_groups=null, market=null, limit=20, offset=0) {
+    return await parseJSON(fetch(`${baseURL}/artists/${id}/albums?include_groups=${include_groups}&market=${market}&limit=${limit}&offset=${offset}`, {
         method: "GET",
         headers: {
             "Authorization": "Bearer " + token
@@ -50,10 +50,10 @@ export function getArtistsAlbums(token, id, include_groups=null, market=null, li
  * @param {number} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
  * @param {number} offset The index of the first item to return. Default: 0 (the first item). Use with `limit` to get the next set of items.
  * @param {string} additional_types A comma-separated list of item types that your client supports besides the default track type. Valid types are: `track` and `episode`.
- * @returns Pages of tracks
+ * @returns {Promise<object>} Pages of tracks
  */
-export function getPlaylistItems(token, playlist_id, market=null, fields=null, limit=20, offset=0, additional_types=null) {
-    return parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/tracks?market=${market}&fields=${fields}&limit=${limit}&offset=${offset}&additional_types=${additional_types}`, {
+export async function getPlaylistItems(token, playlist_id, market=null, fields=null, limit=20, offset=0, additional_types=null) {
+    return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/tracks?market=${market}&fields=${fields}&limit=${limit}&offset=${offset}&additional_types=${additional_types}`, {
         method: "GET",
         headers: {
             "Authorization": "Bearer " + token
@@ -66,10 +66,10 @@ export function getPlaylistItems(token, playlist_id, market=null, fields=null, l
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
  * @param {number} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
  * @param {number} offset The index of the first playlist to return. Default: 0 (the first object). Maximum offset: 100,000. Use with `limit` to get the next set of playlists.
- * @returns A paged set of playlists
+ * @returns {Promise<object>} A paged set of playlists
  */
-export function getCurrentUsersPlaylists(token, limit=20, offset=0) {
-    return parseJSON(fetch(`${baseURL}/me/playlists?limit=${limit}&offset=${offset}`, {
+export async function getCurrentUsersPlaylists(token, limit=20, offset=0) {
+    return await parseJSON(fetch(`${baseURL}/me/playlists?limit=${limit}&offset=${offset}`, {
         method: "GET",
         headers: {
             "Authorization": "Bearer " + token
@@ -83,10 +83,10 @@ export function getCurrentUsersPlaylists(token, limit=20, offset=0) {
  * @param {string} user_id The user's Spotify user ID.
  * @param {number} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
  * @param {number} offset The index of the first playlist to return. Default: 0 (the first object). Maximum offset: 100,000. Use with `limit` to get the next set of playlists.
- * @returns A paged set of playlists
+ * @returns {Promise<object>} A paged set of playlists
  */
-export function getUsersPlaylists(token, user_id, limit=20, offset=0) {
-    return parseJSON(fetch(`${baseURL}/users/${user_id}/playlists?limit=${limit}&offset=${offset}`, {
+export async function getUsersPlaylists(token, user_id, limit=20, offset=0) {
+    return await parseJSON(fetch(`${baseURL}/users/${user_id}/playlists?limit=${limit}&offset=${offset}`, {
         method: "GET",
         headers: {
             "Authorization": "Bearer " + token
@@ -101,10 +101,10 @@ export function getUsersPlaylists(token, user_id, limit=20, offset=0) {
  * @param {string} time_range Over what time frame the affinities are computed. Valid values: `long_term` (calculated from ~1 year of data and including all new data as it becomes available), `medium_term` (approximately last 6 months), `short_term` (approximately last 4 weeks). Default: `medium_term`
  * @param {number} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
  * @param {number} offset The index of the first item to return. Default: 0 (the first item). Use with `limit` to get the next set of items.
- * @returns Pages of artists or tracks
+ * @returns {Promise<object>} Pages of artists or tracks
  */
-export function getUsersTopItems(token, type, time_range="medium_term", limit=20, offset=0) {
-    return parseJSON(fetch(`${baseURL}/me/top/${type}?time_range=${time_range}&limit=${limit}&offset=${offset}`, {
+export async function getUsersTopItems(token, type, time_range="medium_term", limit=20, offset=0) {
+    return await parseJSON(fetch(`${baseURL}/me/top/${type}?time_range=${time_range}&limit=${limit}&offset=${offset}`, {
         method: "GET",
         headers: {
             "Authorization": "Bearer " + token
@@ -113,7 +113,7 @@ export function getUsersTopItems(token, type, time_range="medium_term", limit=20
 }
 
 /**
- * Parse and stringify the response from an API call.
+ * Parse and the response from an API call.
  * @param {Promise} result A `Promise` containing the HTTP `Response` to the request.
  * @returns A JSON object
  */
