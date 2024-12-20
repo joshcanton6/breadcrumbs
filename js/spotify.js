@@ -13,7 +13,7 @@ const baseURL = "https://api.spotify.com/v1";
  * @param {number} offset The index of the first item to return. Default: 0 (the first item). Use with `limit` to get the next set of items.
  * @returns Pages of tracks
  */
-function getAlbumTracks(token, id, market=null, limit=20, offset=0) {
+export function getAlbumTracks(token, id, market=null, limit=20, offset=0) {
     return parseJSON(fetch(`${baseURL}/albums/${id}/tracks?market=${market}&limit=${limit}&offset=${offset}`, {
         method: "GET",
         headers: {
@@ -32,7 +32,7 @@ function getAlbumTracks(token, id, market=null, limit=20, offset=0) {
  * @param {number} offset The index of the first item to return. Default: 0 (the first item). Use with `limit` to get the next set of items.
  * @returns Pages of albums
  */
-function getArtistsAlbums(token, id, include_groups=null, market=null, limit=20, offset=0) {
+export function getArtistsAlbums(token, id, include_groups=null, market=null, limit=20, offset=0) {
     return parseJSON(fetch(`${baseURL}/artists/${id}/albums?include_groups=${include_groups}&market=${market}&limit=${limit}&offset=${offset}`, {
         method: "GET",
         headers: {
@@ -52,7 +52,7 @@ function getArtistsAlbums(token, id, include_groups=null, market=null, limit=20,
  * @param {string} additional_types A comma-separated list of item types that your client supports besides the default track type. Valid types are: `track` and `episode`.
  * @returns Pages of tracks
  */
-function getPlaylistItems(token, playlist_id, market=null, fields=null, limit=20, offset=0, additional_types=null) {
+export function getPlaylistItems(token, playlist_id, market=null, fields=null, limit=20, offset=0, additional_types=null) {
     return parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/tracks?market=${market}&fields=${fields}&limit=${limit}&offset=${offset}&additional_types=${additional_types}`, {
         method: "GET",
         headers: {
@@ -68,7 +68,7 @@ function getPlaylistItems(token, playlist_id, market=null, fields=null, limit=20
  * @param {number} offset The index of the first playlist to return. Default: 0 (the first object). Maximum offset: 100,000. Use with `limit` to get the next set of playlists.
  * @returns A paged set of playlists
  */
-function getCurrentUsersPlaylists(token, limit=20, offset=0) {
+export function getCurrentUsersPlaylists(token, limit=20, offset=0) {
     return parseJSON(fetch(`${baseURL}/me/playlists?limit=${limit}&offset=${offset}`, {
         method: "GET",
         headers: {
@@ -85,7 +85,7 @@ function getCurrentUsersPlaylists(token, limit=20, offset=0) {
  * @param {number} offset The index of the first playlist to return. Default: 0 (the first object). Maximum offset: 100,000. Use with `limit` to get the next set of playlists.
  * @returns A paged set of playlists
  */
-function getUsersPlaylists(token, user_id, limit=20, offset=0) {
+export function getUsersPlaylists(token, user_id, limit=20, offset=0) {
     return parseJSON(fetch(`${baseURL}/users/${user_id}/playlists?limit=${limit}&offset=${offset}`, {
         method: "GET",
         headers: {
@@ -103,7 +103,7 @@ function getUsersPlaylists(token, user_id, limit=20, offset=0) {
  * @param {number} offset The index of the first item to return. Default: 0 (the first item). Use with `limit` to get the next set of items.
  * @returns Pages of artists or tracks
  */
-function getUsersTopItems(token, type, time_range="medium_term", limit=20, offset=0) {
+export function getUsersTopItems(token, type, time_range="medium_term", limit=20, offset=0) {
     return parseJSON(fetch(`${baseURL}/me/top/${type}?time_range=${time_range}&limit=${limit}&offset=${offset}`, {
         method: "GET",
         headers: {
