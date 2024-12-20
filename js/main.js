@@ -59,7 +59,7 @@ async function redirect() {
 }
 
 async function debugAction() {
-    document.getElementById("debug-data").innerHTML = JSON.stringify(await Spotify.getUsersTopItems(sessionStorage.getItem("access_token"), "artists", "short_term"));
+    let data = await Spotify.getUsersTopItems(sessionStorage.getItem("access_token"), "artists", "short_term");
 }
 
 // #endregion Functions
