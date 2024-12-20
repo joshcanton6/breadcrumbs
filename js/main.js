@@ -2,7 +2,6 @@ import * as Spotify from "./spotify.js"
 
 // #region Constants
 
-const home = "https://joshcanton6.github.io/breadcrumbs"
 const homePathname = "/breadcrumbs"
 const client_id = "70d3f1361abf4e1ab9e9e64089fabc36";
 const redirect_uri = homePathname + "/redirect";
@@ -64,10 +63,12 @@ async function redirect() {
 
 // #region Handlers
 
+// TODO
+
 // #endregion Handlers
 
 // #region Listeners
 
-document.getElementById("spotify-login-button").addEventListener("click", login);
+if (spotifyLoginButton) spotifyLoginButton.addEventListener("click", login);
 
 // #endregion Listeners
