@@ -60,6 +60,10 @@ async function redirect() {
 
 async function debugAction() {
     let data = await Spotify.getUsersTopItems(sessionStorage.getItem("access_token"), "artists", "short_term");
+    console.log(data);
+    console.log(data["items"]);
+    console.log(data["items"][0]);
+    console.log(data["items"][0]["name"]);
 }
 
 // #endregion Functions
