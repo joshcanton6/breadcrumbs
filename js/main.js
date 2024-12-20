@@ -66,6 +66,6 @@ async function redirect() {
 
 // #region Listeners
 
-document.getElementById("spotify-login-button").addEventListener("click", login());
+document.getElementById("spotify-login-button").addEventListener("click", login);
 
 // #endregion Listeners
