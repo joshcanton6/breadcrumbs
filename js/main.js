@@ -36,7 +36,7 @@ async function redirect() {
     }
 
     if (urlParams.has("code")) {
-        var token = await fetch("https://accounts.spotify.com/api/token", {
+        const response = await fetch("https://accounts.spotify.com/api/token", {
             method: "POST",
             body: "grant_type=authorization_code" +
                 "&code=" + urlParams.get("code") +
@@ -45,9 +45,9 @@ async function redirect() {
                 "content-type": "application/x-www-form-urlencoded",
                 "Authorization": "Basic " + btoa(clientID + ":2f409da2aebf417893ff056f9b98c3ea")
             }
-        }).then(
-            (response) => response.json()
-        );
+        });
+
+        const token = await response.json();
 
         sessionStorage.setItem("access_token", token["access_token"]);
         sessionStorage.setItem("refresh_token", token["refresh_token"]);
