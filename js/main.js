@@ -1,4 +1,4 @@
-import * as Spotify from spotify.js
+import * as Spotify from "./spotify.js"
 
 // #region Constants
 
@@ -65,5 +65,7 @@ async function redirect() {
 // #endregion Handlers
 
 // #region Listeners
+
+document.getElementById("spotify-login-button").addEventListener("click", login());
 
 // #endregion Listeners
