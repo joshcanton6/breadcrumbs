@@ -2,9 +2,10 @@ import * as Spotify from "./spotify.js"
 
 // #region Constants
 
+const home = "https://joshcanton6.github.io/breadcrumbs"
 const homePathname = "/breadcrumbs"
+const redirect_uri = home + "/redirect";
 const client_id = "70d3f1361abf4e1ab9e9e64089fabc36";
-const redirect_uri = homePathname + "/redirect";
 const spotifyLoginButton = document.getElementById("spotify-login-button");
 
 // #endregion Constants
