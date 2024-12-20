@@ -6,6 +6,7 @@ const home = "https://joshcanton6.github.io/breadcrumbs"
 const redirectURI = home + "/redirect";
 const clientID = "70d3f1361abf4e1ab9e9e64089fabc36";
 const spotifyLoginButton = document.getElementById("spotify-login-button");
+const debugButton = document.getElementById("debug-button");
 
 // #endregion Constants
 
@@ -57,11 +58,16 @@ async function redirect() {
     }
 }
 
+async function debugAction() {
+    document.getElementById("debug-data").innerHTML = await Spotify.getUsersTopItems(sessionStorage.getItem("access_token"), "artists", "short_term")["items"][0]["name"];
+}
+
 // #endregion Functions
 
 // #region Listeners
 
 if (spotifyLoginButton) spotifyLoginButton.addEventListener("click", login);
 if (window.location.origin + window.location.pathname == redirectURI) redirect();
+if (debugButton) debugButton.addEventListener("click", debugAction);
 
 // #endregion Listeners
