@@ -48,8 +48,6 @@ async function redirect() {
             }
         }).then(
             (response) => response.json()
-        ).then(
-            (json) => JSON.parse(JSON.stringify(json))
         );
 
         sessionStorage.setItem("access_token", token["access_token"]);
