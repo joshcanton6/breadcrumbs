@@ -3,8 +3,10 @@ import * as Spotify from "./spotify.js"
 // #region Constants
 
 const home = "https://joshcanton6.github.io/breadcrumbs"
+const homePathname = "/breadcrumbs"
 const client_id = "70d3f1361abf4e1ab9e9e64089fabc36";
-const redirect_uri = home + "/redirect";
+const redirect_uri = homePathname + "/redirect";
+const spotifyLoginButton = document.getElementById("spotify-login-button");
 
 // #endregion Constants
 
@@ -54,7 +56,7 @@ async function redirect() {
         sessionStorage.setItem("refresh_token", token["refresh_token"]);
         sessionStorage.setItem("expires_at", Math.floor(Date.now() / 1000) + token["expires_in"]);
 
-        window.location.href = home + "/app";
+        window.location.pathname = homePathname + "/app";
     }
 }
 
