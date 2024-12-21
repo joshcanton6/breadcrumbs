@@ -95,7 +95,7 @@ export async function saveAlbumsForCurrentUser(token, ids) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                ids: ids
+                "ids": ids
             })
         }));
     }
@@ -125,7 +125,7 @@ export async function removeUsersSavedAlbums(token, ids) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                ids: ids
+                "ids": ids
             })
         }));
     }
