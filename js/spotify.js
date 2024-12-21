@@ -147,7 +147,7 @@ export async function checkUsersSavedAlbums(token, ids) {
 }
 
 /**
- * Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s "Browse" tab).
+ * Get a list of new album releases featured in Spotify.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
  * @param {number} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
  * @param {number} offset The index of the first item to return. Default: 0 (the first item). Use with `limit` to get the next set of items.
