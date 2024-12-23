@@ -287,6 +287,33 @@ export async function getPlaylist(token, playlist_id, market=null, fields=null, 
 }
 
 /**
+ * Change a playlist's name and public/private state.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} playlist_id The Spotify ID of the playlist.
+ * @param {string} name The new name for the playlist.
+ * @param {boolean} public_playlist The playlist's public/private status: `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant.
+ * @param {boolean} collaborative If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. You can only set `collaborative` to `true` on non-public playlists.
+ * @param {string} description Value for playlist description as displayed in Spotify Clients and in the Web API.
+ * @returns {Promise<void>|Promise<object>} An empty response if the playlist is updated, otherwise an `error` object
+ */
+export async function changePlaylistDetails(token, playlist_id, name=null, public_playlist=null, collaborative=null, description=null) {
+    /** @type {PlaylistDetails} */ const body = {};
+    if (name) body.name = name;
+    if (public_playlist !== null ) body.public = public_playlist;
+    if (collaborative !== null) body.collaborative = collaborative;
+    if (description !== null) body.description = description;
+    return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            body
+        })
+    }));
+}
+
+/**
  * Get full details of the items of a playlist owned by a Spotify user.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
  * @param {string} playlist_id The Spotify ID of the playlist.
