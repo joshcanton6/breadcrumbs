@@ -5,6 +5,14 @@
 const baseURL = "https://api.spotify.com/v1";
 
 /**
+ * @typedef {Object} PlaylistDetails
+ * @property {string} [name] The new name for the playlist.
+ * @property {boolean} [public_playlist] The playlist's public/private status: `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant.
+ * @property {boolean} [collaborative] If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. You can only set `collaborative` to `true` on non-public playlists.
+ * @property {string} [description] Value for playlist description as displayed in Spotify Clients and in the Web API.
+ */
+
+/**
  * Get Spotify catalog information for a single album.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
  * @param {string} id The Spotify ID of the album.
