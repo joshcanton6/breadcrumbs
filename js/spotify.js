@@ -418,7 +418,20 @@ export async function getUsersSavedTracks() {}
 export async function saveTracksForCurrentUser() {}
 export async function removeUsersSavedTracks() {}
 export async function checkUsersSavedTracks() {}
-export async function getCurrentUsersProfile() {}
+
+/**
+ * Get detailed profile information about the current user (including the current user's username).
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @returns {Promise<object>} A user
+ */
+export async function getCurrentUsersProfile(token) {
+    return await parseJSON(fetch(`${baseURL}/me`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }));
+}
 
 /**
  * Get the current user's top artists or tracks based on calculated affinity.
