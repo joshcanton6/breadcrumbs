@@ -369,6 +369,12 @@ export async function reorderPlaylistItems(token, playlist_id, range_start, inse
     }));
 }
 
+export async function replacePlaylistItems(token, playlist_id, uris) {}
+export async function updatePlaylistItems() {}
+export async function addItemsToPlaylist() {}
+export async function removePlaylistItems() {}
+
+
 /**
  * Get a list of the playlists owned or followed by the current Spotify user.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
@@ -402,6 +408,18 @@ export async function getUsersPlaylists(token, user_id, limit=20, offset=0) {
     }));
 }
 
+export async function createPlaylist() {}
+export async function getPlaylistCoverImage() {}
+export async function addCustomPlaylistCoverImage() {}
+export async function searchForItem() {}
+export async function getTrack() {}
+export async function getSeveralTracks() {}
+export async function getUsersSavedTracks() {}
+export async function saveTracksForCurrentUser() {}
+export async function removeUsersSavedTracks() {}
+export async function checkUsersSavedTracks() {}
+export async function getCurrentUsersProfile() {}
+
 /**
  * Get the current user's top artists or tracks based on calculated affinity.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
@@ -419,6 +437,15 @@ export async function getUsersTopItems(token, type, time_range="medium_term", li
         }
     }));
 }
+
+export async function getUsersProfile() {}
+export async function followPlaylist() {}
+export async function unfollowPlaylist() {}
+export async function getFollowedArtists() {}
+export async function followArtistsOrUsers() {}
+export async function unfollowArtistsOrUsers() {}
+export async function checkIfUserFollowsArtistsOrUsers() {}
+export async function checkIfCurrentUserFollowsPlaylist() {}
 
 /**
  * Parse the response from an API call.
