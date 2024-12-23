@@ -342,6 +342,34 @@ export async function getPlaylistItems(token, playlist_id, market=null, fields=n
 }
 
 /**
+ * Reorder items in a playlist.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} playlist_id The Spotify ID of the playlist.
+ * @param {number} range_start The position of the first item to be reordered.
+ * @param {number} insert_before The position where the items should be inserted.
+ * @param {number} [range_length] The amount of items to be reordered. Defaults to 1 if not set. The range of items to be reordered begins from the `range_start` position, and includes the `range_length` subsequent items.
+ * @param {string} [snapshot_id] The playlist's snapshot ID against which you want to make the changes.
+ * @returns {Promise<object>} A snapshot ID for the playlist
+ */
+export async function reorderPlaylistItems(token, playlist_id, range_start, insert_before, range_length=1, snapshot_id=null) {
+    /** @type {PlaylistRange} */ const body = {
+        "range_start": range_start,
+        "insert_before": insert_before,
+        "range_length": range_length
+    };
+    if (snapshot_id) body.snapshot_id = snapshot_id;
+    return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/tracks`, {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            body
+        })
+    }));
+}
+
+/**
  * Get a list of the playlists owned or followed by the current Spotify user.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
  * @param {number} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
