@@ -28,7 +28,10 @@ const baseURL = "https://api.spotify.com/v1";
  * @returns {Promise<object>} An album
  */
 export async function getAlbum(token, id, market=null) {
-    return await parseJSON(fetch(`${baseURL}/albums/${id}?market=${market}`, {
+    const params = [];
+    if (market) params.push(`market=${market}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/albums/${id}` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -468,4 +471,13 @@ export async function checkIfCurrentUserFollowsPlaylist() {}
 async function parseJSON(result) {
     const response = await result;
     return response.json();
+}
+
+/**
+ * Builds a query string for an API call.
+ * @param {string[]} params An array of query parameters.
+ * @returns {string} A query string
+ */
+function buildQueryString(params) {
+    return params.length > 0 ? `?${params.join("&")}` : "";
 }
