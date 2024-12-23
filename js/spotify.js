@@ -13,6 +13,14 @@ const baseURL = "https://api.spotify.com/v1";
  */
 
 /**
+ * @typedef {Object} PlaylistRange
+ * @property {number} range_start The position of the first item to be reordered.
+ * @property {number} insert_before The position where the items should be inserted.
+ * @property {number} [range_length] The amount of items to be reordered. Defaults to 1 if not set. The range of items to be reordered begins from the `range_start` position, and includes the `range_length` subsequent items.
+ * @property {string} [snapshot_id] The playlist's snapshot ID against which you want to make the changes.
+ */
+
+/**
  * Get Spotify catalog information for a single album.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
  * @param {string} id The Spotify ID of the album.
