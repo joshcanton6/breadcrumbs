@@ -21,6 +21,11 @@ const baseURL = "https://api.spotify.com/v1";
  */
 
 /**
+ * @typedef {Object} Track
+ * @property {string} uri The resource identifier of an artist, album or track.
+ */
+
+/**
  * Get Spotify catalog information for a single album.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
  * @param {string} id The Spotify ID of the album.
@@ -47,7 +52,11 @@ export async function getAlbum(token, id, market=null) {
  * @returns {Promise<object>} A set of albums
  */
 export async function getSeveralAlbums(token, ids, market=null) {
-    return await parseJSON(fetch(`${baseURL}/albums?${ids}&market=${market}`, {
+    const params = [];
+    params.push(`ids=${ids}`);
+    if (market) params.push(`market=${market}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/albums` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -65,7 +74,12 @@ export async function getSeveralAlbums(token, ids, market=null) {
  * @returns {Promise<object>} Pages of tracks
  */
 export async function getAlbumTracks(token, id, market=null, limit=20, offset=0) {
-    return await parseJSON(fetch(`${baseURL}/albums/${id}/tracks?market=${market}&limit=${limit}&offset=${offset}`, {
+    const params = [];
+    if (market) params.push(`market=${market}`);
+    if (limit !== 20) params.push(`limit=${limit}`);
+    if (offset !== 0) params.push(`offset=${offset}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/albums/${id}/tracks` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -82,7 +96,12 @@ export async function getAlbumTracks(token, id, market=null, limit=20, offset=0)
  * @returns {Promise<object>} Pages of albums
  */
 export async function getUsersSavedAlbums(token, limit=20, offset=0, market=null) {
-    return await parseJSON(fetch(`${baseURL}/me/albums?limit=${limit}&offset=${offset}&market=${market}`, {
+    const params = [];
+    if (limit !== 20) params.push(`limit=${limit}`);
+    if (offset !== 0) params.push(`offset=${offset}`);
+    if (market) params.push(`market=${market}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/me/albums` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -98,7 +117,10 @@ export async function getUsersSavedAlbums(token, limit=20, offset=0, market=null
  */
 export async function saveAlbumsForCurrentUser(token, ids) {
     if (typeof ids == "string") {
-        return await parseJSON(fetch(`${baseURL}/me/albums?ids=${ids}`, {
+        const params = [];
+        params.push(`ids=${ids}`);
+        const query = buildQueryString(params);
+        return await parseJSON(fetch(`${baseURL}/me/albums` + query, {
             method: "PUT",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -128,7 +150,10 @@ export async function saveAlbumsForCurrentUser(token, ids) {
  */
 export async function removeUsersSavedAlbums(token, ids) {
     if (typeof ids == "string") {
-        return await parseJSON(fetch(`${baseURL}/me/albums?ids=${ids}`, {
+        const params = [];
+        params.push(`ids=${ids}`);
+        const query = buildQueryString(params);
+        return await parseJSON(fetch(`${baseURL}/me/albums` + query, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -157,7 +182,10 @@ export async function removeUsersSavedAlbums(token, ids) {
  * @returns {Promise<boolean[]>|Promise<object>} An array of booleans on success, otherwise an `error` object
  */
 export async function checkUsersSavedAlbums(token, ids) {
-    return await parseJSON(fetch(`${baseURL}/me/albums/contains?ids=${ids}`, {
+    const params = [];
+    params.push(`ids=${ids}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/me/albums/contains` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -173,7 +201,11 @@ export async function checkUsersSavedAlbums(token, ids) {
  * @returns {Promise<object>} A paged set of albums
  */
 export async function getNewReleases(token, limit=20, offset=0) {
-    return await parseJSON(fetch(`${baseURL}/browse/new-releases?limit=${limit}&offset=${offset}`, {
+    const params = [];
+    if (limit !== 20) params.push(`limit=${limit}`);
+    if (offset !== 0) params.push(`offset=${offset}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/browse/new-releases` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -203,7 +235,10 @@ export async function getArtist(token, id) {
  * @returns {Promise<object>} A set of artists
  */
 export async function getSeveralArtists(token, ids) {
-    return await parseJSON(fetch(`${baseURL}/artists?ids=${ids}`, {
+    const params = [];
+    params.push(`ids=${ids}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/artists` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -222,7 +257,13 @@ export async function getSeveralArtists(token, ids) {
  * @returns {Promise<object>} Pages of albums
  */
 export async function getArtistsAlbums(token, id, include_groups=null, market=null, limit=20, offset=0) {
-    return await parseJSON(fetch(`${baseURL}/artists/${id}/albums?include_groups=${include_groups}&market=${market}&limit=${limit}&offset=${offset}`, {
+    const params = [];
+    if (include_groups) params.push(`include_groups=${include_groups}`);
+    if (market) params.push(`market=${market}`);
+    if (limit !== 20) params.push(`limit=${limit}`);
+    if (offset !== 0) params.push(`offset=${offset}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/artists/${id}/albums` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -238,7 +279,10 @@ export async function getArtistsAlbums(token, id, include_groups=null, market=nu
  * @returns {Promise<object>} A set of tracks
  */
 export async function getArtistsTopTracks(token, id, market=null) {
-    return await parseJSON(fetch(`${baseURL}/artists/${id}/top-tracks?market=${market}`, {
+    const params = [];
+    if (market) params.push(`market=${market}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/artists/${id}/top-tracks` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -255,7 +299,12 @@ export async function getArtistsTopTracks(token, id, market=null) {
  * @returns {Promise<object>} A paged set of categories
  */
 export async function getSeveralBrowseCategories(token, locale=null, limit=20, offset=0) {
-    return await parseJSON(fetch(`${baseURL}/browse/categories?locale=${locale}&limit=${limit}&offset=${offset}`, {
+    const params = [];
+    if (locale) params.push(`locale=${locale}`);
+    if (limit !== 20) params.push(`limit=${limit}`);
+    if (offset !== 0) params.push(`offset=${offset}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/browse/categories` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -271,7 +320,10 @@ export async function getSeveralBrowseCategories(token, locale=null, limit=20, o
  * @returns {Promise<object>} A category
  */
 export async function getSingleBrowseCategory(token, category_id, locale=null) {
-    return await parseJSON(fetch(`${baseURL}/browse/category/${category_id}?locale=${locale}`, {
+    const params = [];
+    if (locale) params.push(`locale=${locale}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/browse/category/${category_id}` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -289,7 +341,12 @@ export async function getSingleBrowseCategory(token, category_id, locale=null) {
  * @returns {Promise<object>} A playlist
  */
 export async function getPlaylist(token, playlist_id, market=null, fields=null, additional_types=null) {
-    return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}?market=${market}&fields=${fields}&additional_types=${additional_types}`, {
+    const params = [];
+    if (market) params.push(`market=${market}`);
+    if (fields) params.push(`fields=${fields}`);
+    if (additional_types) params.push(`additional_types=${additional_types}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -310,7 +367,7 @@ export async function getPlaylist(token, playlist_id, market=null, fields=null, 
 export async function changePlaylistDetails(token, playlist_id, name=null, public_playlist=null, collaborative=null, description=null) {
     /** @type {PlaylistDetails} */ const body = {};
     if (name) body.name = name;
-    if (public_playlist !== null ) body.public = public_playlist;
+    if (public_playlist !== null) body.public = public_playlist;
     if (collaborative !== null) body.collaborative = collaborative;
     if (description !== null) body.description = description;
     return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}`, {
@@ -336,7 +393,14 @@ export async function changePlaylistDetails(token, playlist_id, name=null, publi
  * @returns {Promise<object>} Pages of tracks
  */
 export async function getPlaylistItems(token, playlist_id, market=null, fields=null, limit=20, offset=0, additional_types=null) {
-    return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/tracks?market=${market}&fields=${fields}&limit=${limit}&offset=${offset}&additional_types=${additional_types}`, {
+    const params = [];
+    if (market) params.push(`market=${market}`);
+    if (fields) params.push(`fields=${fields}`);
+    if (limit !== 20) params.push(`limit=${limit}`);
+    if (offset !== 0) params.push(`offset=${offset}`);
+    if (additional_types) params.push(`additional_types=${additional_types}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/tracks` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -350,11 +414,11 @@ export async function getPlaylistItems(token, playlist_id, market=null, fields=n
  * @param {string} playlist_id The Spotify ID of the playlist.
  * @param {number} range_start The position of the first item to be reordered.
  * @param {number} insert_before The position where the items should be inserted.
- * @param {number} [range_length] The amount of items to be reordered. Defaults to 1 if not set. The range of items to be reordered begins from the `range_start` position, and includes the `range_length` subsequent items.
- * @param {string} [snapshot_id] The playlist's snapshot ID against which you want to make the changes.
+ * @param {number} range_length The amount of items to be reordered. Defaults to 1 if not set. The range of items to be reordered begins from the `range_start` position, and includes the `range_length` subsequent items.
+ * @param {string} snapshot_id The playlist's snapshot ID against which you want to make the changes.
  * @returns {Promise<object>} A snapshot ID for the playlist
  */
-export async function reorderPlaylistItems(token, playlist_id, range_start, insert_before, range_length=1, snapshot_id=null) {
+async function reorderPlaylistItems(token, playlist_id, range_start, insert_before, range_length=1, snapshot_id=null) {
     /** @type {PlaylistRange} */ const body = {
         "range_start": range_start,
         "insert_before": insert_before,
@@ -372,11 +436,124 @@ export async function reorderPlaylistItems(token, playlist_id, range_start, inse
     }));
 }
 
-export async function replacePlaylistItems(token, playlist_id, uris) {}
-export async function updatePlaylistItems() {}
-export async function addItemsToPlaylist() {}
-export async function removePlaylistItems() {}
+/**
+ * Replace items in a playlist. Replacing items in a playlist will overwrite its existing items. This operation can be used for replacing or clearing items in a playlist.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} playlist_id The Spotify ID of the playlist.
+ * @param {string|string[]} uris A comma-separated list of Spotify URIs to set, can be track or episode URIs. Alternatively, an array of Spotify URIs to set. A maximum of 100 items can be set in one request.
+ * @returns {Promise<object>} A snapshot ID for the playlist
+ */
+async function replacePlaylistItems(token, playlist_id, uris) {
+    if (typeof uris == "string") {
+        const params = [];
+        params.push(`uris=${uris}`);
+        const query = buildQueryString(params);
+        return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/tracks` + query, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        }));
+    }
+    if (Array.isArray(uris)) {
+        return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/tracks`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "uris": uris
+            })
+        }));
+    }
+}
 
+/**
+ * Either reorder or replace items in a playlist depending on the request's parameters. To reorder items, include `range_start`, `insert_before`, `range_length` and `snapshot_id` in the request's body. To replace items, include `uris` as either a query parameter or in the request's body. Replacing items in a playlist will overwrite its existing items. This operation can be used for replacing or clearing items in a playlist. Replace and reorder are mutually exclusive operations which share the same endpoint, but have different parameters. These operations can't be applied together in a single request.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} playlist_id The Spotify ID of the playlist.
+ * @param {string|string[]} uris A comma-separated list of Spotify URIs to set, can be track or episode URIs. Alternatively, an array of Spotify URIs to set. A maximum of 100 items can be set in one request.
+ * @param {number} range_start The position of the first item to be reordered.
+ * @param {number} insert_before The position where the items should be inserted.
+ * @param {number} range_length The amount of items to be reordered. Defaults to 1 if not set. The range of items to be reordered begins from the `range_start` position, and includes the `range_length` subsequent items.
+ * @param {string} snapshot_id The playlist's snapshot ID against which you want to make the changes.
+ * @returns {Promise<object>} A snapshot ID for the playlist
+ */
+export async function updatePlaylistItems(token, playlist_id, uris=null, range_start=null, insert_before=null, range_length=null, snapshot_id=null) {
+    if (!uris && range_start != null && insert_before != null && range_length) {
+        return await reorderPlaylistItems(token, playlist_id, range_start, insert_before, range_length, snapshot_id);
+    }
+    if (uris && uris.length >= 0 && !range_start && !insert_before && !range_length) {
+        return await replacePlaylistItems(token, playlist_id, uris);
+    }
+}
+
+/**
+ * Add one or more items to a user's playlist.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} playlist_id The Spotify ID of the playlist.
+ * @param {number} position The position to insert the items, a zero-based index. If omitted, the items will be appended to the playlist. Items are added in the order they are listed in the query string or request body.
+ * @param {string|string[]} uris A comma-separated list of Spotify URIs to set, can be track or episode URIs. Alternatively, an array of Spotify URIs to set. A maximum of 100 items can be set in one request.
+ * @returns {Promise<object>} A snapshot ID for the playlist
+ */
+export async function addItemsToPlaylist(token, playlist_id, position=null, uris) {
+    if (typeof uris == "string") {
+        const params = [];
+        if (position) params.push(`position=${position}`);
+        params.push(`uris=${uris}`);
+        const query = buildQueryString(params);
+        return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/tracks` + query, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        }));
+    }
+    if (Array.isArray(uris)) {
+        const body = {
+            "uris": uris
+        };
+        if (position != null) body.position = position;
+        return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/tracks`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                body
+            })
+        }));
+    }
+}
+
+/**
+ * Remove one or more items from a user's playlist.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} playlist_id The Spotify ID of the playlist.
+ * @param {Track[]} tracks An array of objects containing Spotify URIs of the tracks or episodes to remove. A maximum of 100 objects can be sent at once.
+ * @param {string} snapshot_id The playlist's snapshot ID against which you want to make the changes. The API will validate that the specified items exist and in the specified positions and make the changes, even if more recent changes have been made to the playlist.
+ * @returns {Promise<object>} A snapshot ID for the playlist
+ */
+export async function removePlaylistItems(token, playlist_id, tracks, snapshot_id=null) {
+    const body = {
+        "tracks": tracks
+    };
+    if (snapshot_id) body.snapshot_id = snapshot_id;
+    return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/tracks`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            body
+        })
+    }));
+}
 
 /**
  * Get a list of the playlists owned or followed by the current Spotify user.
@@ -386,7 +563,11 @@ export async function removePlaylistItems() {}
  * @returns {Promise<object>} A paged set of playlists
  */
 export async function getCurrentUsersPlaylists(token, limit=20, offset=0) {
-    return await parseJSON(fetch(`${baseURL}/me/playlists?limit=${limit}&offset=${offset}`, {
+    const params = [];
+    if (limit !== 20) params.push(`limit=${limit}`);
+    if (offset !== 0) params.push(`offset=${offset}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/me/playlists` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -403,7 +584,11 @@ export async function getCurrentUsersPlaylists(token, limit=20, offset=0) {
  * @returns {Promise<object>} A paged set of playlists
  */
 export async function getUsersPlaylists(token, user_id, limit=20, offset=0) {
-    return await parseJSON(fetch(`${baseURL}/users/${user_id}/playlists?limit=${limit}&offset=${offset}`, {
+    const params = [];
+    if (limit !== 20) params.push(`limit=${limit}`);
+    if (offset !== 0) params.push(`offset=${offset}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/users/${user_id}/playlists` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -411,7 +596,35 @@ export async function getUsersPlaylists(token, user_id, limit=20, offset=0) {
     }));
 }
 
-export async function createPlaylist() {}
+/**
+ * Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.) Each user is generally limited to a maximum of 11000 playlists.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} user_id The user's Spotify user ID.
+ * @param {string} name The name for the new playlist.
+ * @param {boolean} public_playlist Defaults to `true`. The playlist's public/private status: `true` the playlist will be public, `false` the playlist will be private.
+ * @param {boolean} collaborative Defaults to `false`. If `true` the playlist will be collaborative.
+ * @param {string} description Value for playlist description as displayed in Spotify Clients and in the Web API.
+ * @returns {Promise<object>} A playlist
+ */
+export async function createPlaylist(token, user_id, name, public_playlist=true, collaborative=false, description=null) {
+    const body = {
+        "name": name
+    }
+    if (!public_playlist) body.public = public_playlist;
+    if (collaborative) body.collaborative = collaborative;
+    if (description) body.description = description;
+    return await parseJSON(fetch(`${baseURL}/users/${user_id}/playlists`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            body
+        })
+    }));
+}
+
 export async function getPlaylistCoverImage() {}
 export async function addCustomPlaylistCoverImage() {}
 export async function searchForItem() {}
@@ -446,7 +659,12 @@ export async function getCurrentUsersProfile(token) {
  * @returns {Promise<object>} Pages of artists or tracks
  */
 export async function getUsersTopItems(token, type, time_range="medium_term", limit=20, offset=0) {
-    return await parseJSON(fetch(`${baseURL}/me/top/${type}?time_range=${time_range}&limit=${limit}&offset=${offset}`, {
+    const params = [];
+    if (time_range != "medium_term") params.push(`time_range=${time_range}`);
+    if (limit !== 20) params.push(`limit=${limit}`);
+    if (offset !== 0) params.push(`offset=${offset}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/me/top/${type}` + query, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`
