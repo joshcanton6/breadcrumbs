@@ -354,9 +354,7 @@ export async function changePlaylistDetails(token, playlist_id, name=null, publi
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            body
-        })
+        body: JSON.stringify(body)
     }));
 }
 
@@ -409,9 +407,7 @@ async function reorderPlaylistItems(token, playlist_id, range_start, insert_befo
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            body
-        })
+        body: JSON.stringify(body)
     }));
 }
 
@@ -502,9 +498,7 @@ export async function addItemsToPlaylist(token, playlist_id, position=null, uris
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                body
-            })
+            body: JSON.stringify(body)
         }));
     }
 }
@@ -528,9 +522,7 @@ export async function removePlaylistItems(token, playlist_id, tracks, snapshot_i
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            body
-        })
+        body: JSON.stringify(body)
     }));
 }
 
@@ -598,9 +590,7 @@ export async function createPlaylist(token, user_id, name, public_playlist=true,
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            body
-        })
+        body: JSON.stringify(body)
     }));
 }
 
