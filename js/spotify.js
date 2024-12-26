@@ -917,6 +917,12 @@ function buildQueryString(params) {
  */
 
 /**
+ * @typedef {Object} PlaylistURIsRequest
+ * @property {string[]} uris
+ * @property {number} [position]
+ */
+
+/**
  * @typedef {Object} Track
  * @property {string} uri
  */
@@ -925,10 +931,4 @@ function buildQueryString(params) {
  * @typedef {Object} TracksRequest
  * @property {Track[]} tracks
  * @property {string} [snapshot_id]
- */
-
-/**
- * @typedef {Object} PlaylistURIsRequest
- * @property {string[]} uris
- * @property {number} [position]
  */
