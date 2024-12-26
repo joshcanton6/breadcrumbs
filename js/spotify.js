@@ -473,11 +473,11 @@ export async function updatePlaylistItems(token, playlist_id, uris=null, range_s
  * @param {string|string[]} uris A comma-separated list of Spotify URIs to set, can be track or episode URIs. Alternatively, an array of Spotify URIs to set. A maximum of 100 items can be set in one request.
  * @returns {Promise<object>} A snapshot ID for the playlist
  */
-export async function addItemsToPlaylist(token, playlist_id, position=null, uris) {
+export async function addItemsToPlaylist(token, playlist_id, uris, position=null) {
     if (typeof uris == "string") {
         const params = [];
-        if (position) params.push(`position=${position}`);
         params.push(`uris=${uris}`);
+        if (position) params.push(`position=${position}`);
         const query = buildQueryString(params);
         return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/tracks` + query, {
             method: "POST",
