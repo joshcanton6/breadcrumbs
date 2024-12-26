@@ -5,27 +5,6 @@
 const baseURL = "https://api.spotify.com/v1";
 
 /**
- * @typedef {Object} PlaylistDetails
- * @property {string} [name] The new name for the playlist.
- * @property {boolean} [public_playlist] The playlist's public/private status: `true` the playlist will be public, `false` the playlist will be private, `null` the playlist status is not relevant.
- * @property {boolean} [collaborative] If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. You can only set `collaborative` to `true` on non-public playlists.
- * @property {string} [description] Value for playlist description as displayed in Spotify Clients and in the Web API.
- */
-
-/**
- * @typedef {Object} PlaylistRange
- * @property {number} range_start The position of the first item to be reordered.
- * @property {number} insert_before The position where the items should be inserted.
- * @property {number} [range_length] The amount of items to be reordered. Defaults to 1 if not set. The range of items to be reordered begins from the `range_start` position, and includes the `range_length` subsequent items.
- * @property {string} [snapshot_id] The playlist's snapshot ID against which you want to make the changes.
- */
-
-/**
- * @typedef {Object} Track
- * @property {string} uri The resource identifier of an artist, album or track.
- */
-
-/**
  * Get Spotify catalog information for a single album.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
  * @param {string} id The Spotify ID of the album.
@@ -365,7 +344,7 @@ export async function getPlaylist(token, playlist_id, market=null, fields=null, 
  * @returns {Promise<void>|Promise<object>} An empty response if the playlist is updated, otherwise an `error` object
  */
 export async function changePlaylistDetails(token, playlist_id, name=null, public_playlist=null, collaborative=null, description=null) {
-    /** @type {PlaylistDetails} */ const body = {};
+    /** @type {PlaylistDetailsRequest} */ const body = {};
     if (name) body.name = name;
     if (public_playlist !== null) body.public = public_playlist;
     if (collaborative !== null) body.collaborative = collaborative;
@@ -419,7 +398,7 @@ export async function getPlaylistItems(token, playlist_id, market=null, fields=n
  * @returns {Promise<object>} A snapshot ID for the playlist
  */
 async function reorderPlaylistItems(token, playlist_id, range_start, insert_before, range_length=1, snapshot_id=null) {
-    /** @type {PlaylistRange} */ const body = {
+    /** @type {PlaylistRangeRequest} */ const body = {
         "range_start": range_start,
         "insert_before": insert_before,
         "range_length": range_length
@@ -513,7 +492,7 @@ export async function addItemsToPlaylist(token, playlist_id, position=null, uris
         }));
     }
     if (Array.isArray(uris)) {
-        const body = {
+        /** @type {PlaylistURIsRequest} */ const body = {
             "uris": uris
         };
         if (position != null) body.position = position;
@@ -539,7 +518,7 @@ export async function addItemsToPlaylist(token, playlist_id, position=null, uris
  * @returns {Promise<object>} A snapshot ID for the playlist
  */
 export async function removePlaylistItems(token, playlist_id, tracks, snapshot_id=null) {
-    const body = {
+    /** @type {TracksRequest} */ const body = {
         "tracks": tracks
     };
     if (snapshot_id) body.snapshot_id = snapshot_id;
@@ -607,7 +586,7 @@ export async function getUsersPlaylists(token, user_id, limit=20, offset=0) {
  * @returns {Promise<object>} A playlist
  */
 export async function createPlaylist(token, user_id, name, public_playlist=true, collaborative=false, description=null) {
-    const body = {
+    /** @type {PlaylistDetailsRequest} */ const body = {
         "name": name
     }
     if (!public_playlist) body.public = public_playlist;
@@ -777,3 +756,43 @@ function buildQueryString(params) {
     const urlEncodedParams = params.map(param => encodeURIComponent(param));
     return `?${urlEncodedParams.join("&")}`;
 }
+
+/**
+ * @typedef {Object} PlaylistDetailsRequest
+ * @property {string} [name]
+ * @property {boolean} [public_playlist]
+ * @property {boolean} [collaborative]
+ * @property {string} [description]
+ */
+
+/**
+ * @typedef {Object} PlaylistRangeRequest
+ * @property {number} range_start
+ * @property {number} insert_before
+ * @property {number} [range_length]
+ * @property {string} [snapshot_id]
+ */
+
+/**
+ * @typedef {Object} Track
+ * @property {string} uri
+ */
+
+/**
+ * @typedef {Object} TracksRequest
+ * @property {Track[]} tracks
+ * @property {string} [snapshot_id]
+ */
+
+/**
+ * @typedef {Object} PlaylistURIsRequest
+ * @property {string[]} uris
+ * @property {number} [position]
+ */
+
+/**
+ * @typedef {Object} PlaylistImage
+ * @property {string} url
+ * @property {number} height
+ * @property {number} width
+ */
