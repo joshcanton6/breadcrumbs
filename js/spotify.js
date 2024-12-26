@@ -396,7 +396,7 @@ export async function getPlaylistItems(token, playlist_id, market=null, fields=n
  * @returns {Promise<object>} A snapshot ID for the playlist
  */
 async function reorderPlaylistItems(token, playlist_id, range_start, insert_before, range_length=1, snapshot_id=null) {
-    /** @type {PlaylistRangeRequest} */ const body = {
+    /** @type {ReorderPlaylistItemsRequest} */ const body = {
         "range_start": range_start,
         "insert_before": insert_before,
         "range_length": range_length
@@ -488,7 +488,7 @@ export async function addItemsToPlaylist(token, playlist_id, uris, position=null
         }));
     }
     if (Array.isArray(uris)) {
-        /** @type {PlaylistURIsRequest} */ const body = {
+        /** @type {AddPlaylistItemsRequest} */ const body = {
             "uris": uris
         };
         if (position != null) body.position = position;
@@ -512,7 +512,7 @@ export async function addItemsToPlaylist(token, playlist_id, uris, position=null
  * @returns {Promise<object>} A snapshot ID for the playlist
  */
 export async function removePlaylistItems(token, playlist_id, tracks, snapshot_id=null) {
-    /** @type {TracksRequest} */ const body = {
+    /** @type {RemoveTracksRequest} */ const body = {
         "tracks": tracks
     };
     if (snapshot_id) body.snapshot_id = snapshot_id;
@@ -860,7 +860,7 @@ export async function getUsersProfile(token, user_id) {
  * @returns {Promise<void>|Promise<object>} An empty response if the playlist is followed, otherwise an `error` object
  */
 export async function followPlaylist(token, playlist_id, public_playlist=true) {
-    const body = {};
+    /** @type {FollowPlaylistRequest} */ const body = {};
     if (!public_playlist) body.public = public_playlist;
     return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/followers`, {
         method: "POST",
@@ -1045,7 +1045,7 @@ function buildQueryString(params) {
  */
 
 /**
- * @typedef {Object} PlaylistRangeRequest
+ * @typedef {Object} ReorderPlaylistItemsRequest
  * @property {number} range_start
  * @property {number} insert_before
  * @property {number} [range_length]
@@ -1053,7 +1053,7 @@ function buildQueryString(params) {
  */
 
 /**
- * @typedef {Object} PlaylistURIsRequest
+ * @typedef {Object} AddPlaylistItemsRequest
  * @property {string[]} uris
  * @property {number} [position]
  */
@@ -1064,7 +1064,12 @@ function buildQueryString(params) {
  */
 
 /**
- * @typedef {Object} TracksRequest
+ * @typedef {Object} RemoveTracksRequest
  * @property {Track[]} tracks
  * @property {string} [snapshot_id]
+ */
+
+/**
+ * @typedef {Object} FollowPlaylistRequest
+ * @property {boolean} public_playlist
  */
