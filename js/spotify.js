@@ -872,7 +872,6 @@ export async function followPlaylist(token, playlist_id, public_playlist=true) {
     }));
 }
 
-export async function getFollowedArtists() {}
 /**
  * Remove the current user as a follower of a playlist.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
@@ -888,6 +887,8 @@ export async function unfollowPlaylist(token, playlist_id) {
     }));
 }
 
+
+export async function getFollowedArtists(token, type, after=null, limit=20) {}
 
 export async function followArtistsOrUsers() {}
 export async function unfollowArtistsOrUsers() {}
