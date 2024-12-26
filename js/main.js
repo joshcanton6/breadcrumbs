@@ -9,18 +9,10 @@ const spotifyLoginButton = document.getElementById("spotify-login-button");
 const debugButton = document.getElementById("debug-button");
 
 // #endregion Constants
-
 // #region Functions
 
 function login() {
-    const scope = "user-read-private" +
-        " user-read-email" +
-        " playlist-read-private" +
-        " playlist-read-collaborative" +
-        " playlist-modify-public" +
-        " playlist-modify-private" +
-        " ugc-image-upload" +
-        " user-top-read";
+    const scope = "user-top-read";
 
     window.location.href = "https://accounts.spotify.com/authorize" +
         "?client_id=" + clientID +
@@ -64,7 +56,6 @@ async function debugAction() {
 }
 
 // #endregion Functions
-
 // #region Listeners
 
 if (spotifyLoginButton) spotifyLoginButton.addEventListener("click", login);
