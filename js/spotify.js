@@ -1085,5 +1085,5 @@ function buildQueryString(params) {
 
 /**
  * @typedef {Object} FollowPlaylistRequest
- * @property {boolean} public_playlist
+ * @property {boolean} [public_playlist]
  */
