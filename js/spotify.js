@@ -1031,7 +1031,7 @@ export async function checkIfCurrentUserFollowsPlaylist(token, playlist_id) {
 
 /**
  * Parse the response from an API call.
- * @param {Promise} result A `Promise` containing the HTTP `Response` to the request.
+ * @param {Promise<any>} result A `Promise` containing the HTTP `Response` to the request.
  * @returns {Promise<object>} A JSON object
  */
 async function parseJSON(result) {
