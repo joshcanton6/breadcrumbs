@@ -311,6 +311,20 @@ export async function getSingleBrowseCategory(token, category_id, locale=null) {
 }
 
 /**
+ * Get the list of markets where Spotify is available.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @returns {Promise<object>} A markets object with an array of country codes
+ */
+export async function getAvailableMarkets(token) {
+    return await parseJSON(fetch(`${baseURL}/markets`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }));
+}
+
+/**
  * Get a playlist owned by a Spotify user.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
  * @param {string} playlist_id The Spotify ID of the playlist.
