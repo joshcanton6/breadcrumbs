@@ -872,8 +872,23 @@ export async function followPlaylist(token, playlist_id, public_playlist=true) {
     }));
 }
 
-export async function unfollowPlaylist() {}
 export async function getFollowedArtists() {}
+/**
+ * Remove the current user as a follower of a playlist.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} playlist_id The Spotify ID of the playlist.
+ * @returns {Promise<void>|Promise<object>} An empty response if the playlist is unfollowed, otherwise an `error` object
+ */
+export async function unfollowPlaylist(token, playlist_id) {
+    return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/followers`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }));
+}
+
+
 export async function followArtistsOrUsers() {}
 export async function unfollowArtistsOrUsers() {}
 export async function checkIfUserFollowsArtistsOrUsers() {}
