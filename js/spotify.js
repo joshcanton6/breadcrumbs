@@ -608,7 +608,7 @@ export async function createPlaylist(token, user_id, name, public_playlist=true,
  * Get the current image associated with a specific playlist.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
  * @param {string} playlist_id The Spotify ID of the playlist.
- * @returns {Promise<PlaylistImage[]>|Promise<object>} A set of images on success, otherwise an `error` object
+ * @returns {Promise<object[]>|Promise<object>} A set of images on success, otherwise an `error` object
  */
 export async function getPlaylistCoverImage(token, playlist_id) {
     return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/images`, {
@@ -788,11 +788,4 @@ function buildQueryString(params) {
  * @typedef {Object} PlaylistURIsRequest
  * @property {string[]} uris
  * @property {number} [position]
- */
-
-/**
- * @typedef {Object} PlaylistImage
- * @property {string} url
- * @property {number} height
- * @property {number} width
  */
