@@ -674,11 +674,131 @@ export async function getTrack(token, id, market=null) {
     }));
 }
 
-export async function getSeveralTracks() {}
-export async function getUsersSavedTracks() {}
-export async function saveTracksForCurrentUser() {}
-export async function removeUsersSavedTracks() {}
-export async function checkUsersSavedTracks() {}
+/**
+ * Get Spotify catalog information for multiple tracks based on their Spotify IDs.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} ids A comma-separated list of the Spotify IDs. Maximum: 50 IDs.
+ * @param {string} market An ISO 3166-1 alpha-2 country code. If a country code is specified, only content that is available in that market will be returned. If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
+ * @returns {Promise<object>} A set of tracks
+ */
+export async function getSeveralTracks(token, ids, market=null) {
+    const params = [];
+    params.push(ids);
+    if (market) params.push(`market=${market}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/tracks` + query, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }));
+}
+
+/**
+ * Get a list of the songs saved in the current Spotify user's 'Your Music' library.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} market An ISO 3166-1 alpha-2 country code. If a country code is specified, only content that is available in that market will be returned. If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
+ * @param {number} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
+ * @param {number} offset The index of the first item to return. Default: 0 (the first item). Use with `limit` to get the next set of items.
+ * @returns {Promise<object>} Pages of tracks
+ */
+export async function getUsersSavedTracks(token, market=null, limit=20, offset=0) {
+    const params = [];
+    if (market) params.push(`market=${market}`);
+    if (limit !== 20) params.push(`limit=${limit}`);
+    if (offset !== 0) params.push(`offset=${offset}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/me/tracks` + query, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }));
+}
+
+/**
+ * Save one or more tracks to the current user's 'Your Music' library.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string|string[]} ids A comma-separated list of the Spotify IDs. Maximum: 50 IDs. Alternatively, an array of the Spotify IDs. A maximum of 50 items can be specified in one request.
+ * @returns {Promise<void>|Promise<object>} An empty response if the track is saved, otherwise an `error` object
+ */
+export async function saveTracksForCurrentUser(token, ids) {
+    if (typeof ids == "string") {
+        const params = [];
+        params.push(`ids=${ids}`);
+        const query = buildQueryString(params);
+        return await parseJSON(fetch(`${baseURL}/me/tracks` + query, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        }));
+    }
+    if (Array.isArray(ids)) {
+        return await parseJSON(fetch(`${baseURL}/me/tracks`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "ids": ids
+            })
+        }));
+    }
+}
+
+/**
+ * Remove one or more tracks from the current user's 'Your Music' library.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string|string[]} ids A comma-separated list of the Spotify IDs. Maximum: 50 IDs. Alternatively, an array of the Spotify IDs. A maximum of 50 items can be specified in one request.
+ * @returns {Promise<void>|Promise<object>} An empty response if the track is removed, otherwise an `error` object
+ */
+export async function removeUsersSavedTracks(token, ids) {
+    if (typeof ids == "string") {
+        const params = [];
+        params.push(`ids=${ids}`);
+        const query = buildQueryString(params);
+        return await parseJSON(fetch(`${baseURL}/me/tracks` + query, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        }));
+    }
+    if (Array.isArray(ids)) {
+        return await parseJSON(fetch(`${baseURL}/me/tracks`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "ids": ids
+            })
+        }));
+    }
+}
+
+/**
+ * Check if one or more tracks is already saved in the current Spotify user's 'Your Music' library.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string|string[]} ids A comma-separated list of the Spotify IDs. Maximum: 50 IDs.
+ * @returns {Promise<boolean[]>|Promise<object>} An array of booleans on success, otherwise an `error` object
+ */
+export async function checkUsersSavedTracks(token, ids) {
+    const params = [];
+    params.push(`ids=${ids}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/me/tracks/contains` + query, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }));
+}
 
 /**
  * Get detailed profile information about the current user (including the current user's username).
@@ -717,8 +837,41 @@ export async function getUsersTopItems(token, type, time_range="medium_term", li
     }));
 }
 
-export async function getUsersProfile() {}
-export async function followPlaylist() {}
+/**
+ * Get public profile information about a Spotify user.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} user_id The user's Spotify user ID.
+ * @returns {Promise<object>} A user
+ */
+export async function getUsersProfile(token, user_id) {
+    return await parseJSON(fetch(`${baseURL}/users/${user_id}`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }));
+}
+
+/**
+ * Add the current user as a follower of a playlist.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} playlist_id The Spotify ID of the playlist.
+ * @param {boolean} public_playlist Defaults to `true`. If `true` the playlist will be included in user's public playlists (added to profile), if `false` it will remain private.
+ * @returns {Promise<void>|Promise<object>} An empty response if the playlist is followed, otherwise an `error` object
+ */
+export async function followPlaylist(token, playlist_id, public_playlist=true) {
+    const body = {};
+    if (!public_playlist) body.public = public_playlist;
+    return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/followers`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    }));
+}
+
 export async function unfollowPlaylist() {}
 export async function getFollowedArtists() {}
 export async function followArtistsOrUsers() {}
