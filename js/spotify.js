@@ -719,7 +719,7 @@ export async function getUsersSavedTracks(token, market=null, limit=20, offset=0
 /**
  * Save one or more tracks to the current user's 'Your Music' library.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
- * @param {string|string[]} ids A comma-separated list of the Spotify IDs. Maximum: 50 IDs. Alternatively, an array of the Spotify IDs. A maximum of 50 items can be specified in one request.
+ * @param {string|string[]} ids A comma-separated list of the Spotify IDs. Alternatively, an array of the Spotify IDs. A maximum of 50 items can be specified in one request.
  * @returns {Promise<void>|Promise<object>} An empty response if the track is saved, otherwise an `error` object
  */
 export async function saveTracksForCurrentUser(token, ids) {
@@ -752,7 +752,7 @@ export async function saveTracksForCurrentUser(token, ids) {
 /**
  * Remove one or more tracks from the current user's 'Your Music' library.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
- * @param {string|string[]} ids A comma-separated list of the Spotify IDs. Maximum: 50 IDs. Alternatively, an array of the Spotify IDs. A maximum of 50 items can be specified in one request.
+ * @param {string|string[]} ids A comma-separated list of the Spotify IDs. Alternatively, an array of the Spotify IDs. A maximum of 50 items can be specified in one request.
  * @returns {Promise<void>|Promise<object>} An empty response if the track is removed, otherwise an `error` object
  */
 export async function removeUsersSavedTracks(token, ids) {
@@ -887,13 +887,133 @@ export async function unfollowPlaylist(token, playlist_id) {
     }));
 }
 
+/**
+ * Get the current user's followed artists.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} after The last artist ID retrieved from the previous request.
+ * @param {number} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
+ * @returns {Promise<object>} A paged set of artists
+ */
+export async function getFollowedArtists(token, after=null, limit=20) {
+    const params = [];
+    params.push("type=artist");
+    if (after) params.push(`after=${after}`);
+    if (limit !== 20) params.push(`limit=${limit}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/me/following` + query, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }));
+}
 
-export async function getFollowedArtists(token, type, after=null, limit=20) {}
+/**
+ * Add the current user as a follower of one or more artists or other Spotify users.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} type The ID type. Allowed values: `artist`, `user`.
+ * @param {string|string[]} ids A comma-separated list of the artist or the user Spotify IDs. Alternatively, an array of the artist or user Spotify IDs. A maximum of 50 IDs can be sent in one request.
+ * @returns {Promise<void>|Promise<object} An empty response if the artist or user is followed, otherwise an `error` object
+ */
+export async function followArtistsOrUsers(token, type, ids) {
+    const params = [];
+    params.push(`type=${type}`);
+    if (typeof ids == "string") {
+        params.push(`ids=${ids}`);
+        const query = buildQueryString(params);
+        return await parseJSON(fetch(`${baseURL}/me/following` + query, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        }));
+    }
+    if (Array.isArray(ids)) {
+        const query = buildQueryString(params);
+        return await parseJSON(fetch(`${baseURL}/me/following` + query, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "ids": ids
+            })
+        }));
+    }
+}
 
-export async function followArtistsOrUsers() {}
-export async function unfollowArtistsOrUsers() {}
-export async function checkIfUserFollowsArtistsOrUsers() {}
-export async function checkIfCurrentUserFollowsPlaylist() {}
+/**
+ * Remove the current user as a follower of one or more artists or other Spotify users.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} type The ID type. Allowed values: `artist`, `user`.
+ * @param {string|string[]} ids A comma-separated list of the artist or the user Spotify IDs. Alternatively, an array of the artist or user Spotify IDs. A maximum of 50 IDs can be sent in one request.
+ * @returns {Promise<void>|Promise<object} An empty response if the artist or user is unfollowed, otherwise an `error` object
+ */
+export async function unfollowArtistsOrUsers(token, type, ids) {
+    const params = [];
+    params.push(`type=${type}`);
+    if (typeof ids == "string") {
+        params.push(`ids=${ids}`);
+        const query = buildQueryString(params);
+        return await parseJSON(fetch(`${baseURL}/me/following` + query, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        }));
+    }
+    if (Array.isArray(ids)) {
+        const query = buildQueryString(params);
+        return await parseJSON(fetch(`${baseURL}/me/following` + query, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "ids": ids
+            })
+        }));
+    }
+}
+
+/**
+ * Check to see if the current user is following one or more artists or other Spotify users.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} type The ID type: either `artist` or `user`.
+ * @param {string} ids A comma-separated list of the artist or the user Spotify IDs to check. A maximum of 50 IDs can be sent in one request.
+ * @returns {Promise<boolean[]>|Promise<object>} An array of booleans on success, otherwise an `error` object
+ */
+export async function checkIfUserFollowsArtistsOrUsers(token, type, ids) {
+    const params = [];
+    params.push(`type=${type}`);
+    params.push(`ids=${ids}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/me/following/contains` + query, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }));
+}
+
+/**
+ * Check to see if the current user is following a specified playlist.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} playlist_id The Spotify ID of the playlist.
+ * @returns {Promise<boolean[]>|Promise<object>} An array of booleans on success, otherwise an `error` object
+ */
+export async function checkIfCurrentUserFollowsPlaylist(token, playlist_id) {
+    return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/followers/contains`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }));
+}
 
 /**
  * Parse the response from an API call.
