@@ -625,10 +625,86 @@ export async function createPlaylist(token, user_id, name, public_playlist=true,
     }));
 }
 
-export async function getPlaylistCoverImage() {}
-export async function addCustomPlaylistCoverImage() {}
-export async function searchForItem() {}
-export async function getTrack() {}
+/**
+ * Get the current image associated with a specific playlist.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} playlist_id The Spotify ID of the playlist.
+ * @returns {Promise<PlaylistImage[]>|Promise<object>} A set of images on success, otherwise an `error` object
+ */
+export async function getPlaylistCoverImage(token, playlist_id) {
+    return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/images`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }));
+}
+
+/**
+ * Replace the image used to represent a specific playlist.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} playlist_id The Spotify ID of the playlist.
+ * @param {string} image Base64 encoded JPEG image data, maximum payload size is 256 KB.
+ * @returns {Promise<void>|Promise<object} An empty response if the image is uploaded, otherwise an `error` object
+ */
+export async function addCustomPlaylistCoverImage(token, playlist_id, image) {
+    return await parseJSON(fetch(`${baseURL}/playlists/${playlist_id}/images`, {
+        method: "PUT",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "image/jpeg"
+        },
+        body: image
+    }));
+}
+
+/**
+ * Get Spotify catalog information about albums, artists, playlists, tracks, shows, episodes or audiobooks that match a keyword string.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} q Your search query. You can narrow down your search using field filters. The available filters are `album`, `artist`, `track`, `year`, `upc`, `tag:hipster`, `tag:new`, `isrc`, and `genre`. Each field filter only applies to certain result types. The `artist` and `year` filters can be used while searching albums, artists and tracks. You can filter on a single year or a range. The `album` filter can be used while searching albums and tracks. The `genre` filter can be used while searching artists and tracks. The `isrc` and `track` filters can be used while searching tracks. The `upc`, `tag:new` and `tag:hipster` filters can only be used while searching albums. The `tag:new` filter will return albums released in the past two weeks and `tag:hipster` can be used to return only albums with the lowest 10% popularity.
+ * @param {string} type A comma-separated list of item types to search across. Search results include hits from all the specified item types. Allowed values: `album`, `artist`, `playlist`, `track`, `show`, `episode`, `audiobook`.
+ * @param {string} market An ISO 3166-1 alpha-2 country code. If a country code is specified, only content that is available in that market will be returned. If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
+ * @param {number} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
+ * @param {number} offset The index of the first item to return. Default: 0 (the first item). Use with `limit` to get the next set of items.
+ * @param {boolean} include_external If include_external is enabled it signals that the client can play externally hosted audio content, and marks the content as playable in the response. By default externally hosted audio content is marked as unplayable in the response.
+ * @returns {Promise<object>} Search response
+ */
+export async function searchForItem(token, q, type, market=null, limit=20, offset=0, include_external=false) {
+    const params = [];
+    params.push(q);
+    params.push(`type=${type}`);
+    if (market) params.push(`market=${market}`);
+    if (limit !== 20) params.push(`limit=${limit}`);
+    if (offset !== 0) params.push(`offset=${offset}`);
+    if (include_external) params.push("include_external=audio");
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/search` + query, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }));
+}
+
+/**
+ * Get Spotify catalog information for a single track identified by its unique Spotify ID.
+ * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
+ * @param {string} id The Spotify ID for the track.
+ * @param {string} market An ISO 3166-1 alpha-2 country code. If a country code is specified, only content that is available in that market will be returned. If a valid user access token is specified in the request header, the country associated with the user account will take priority over this parameter.
+ * @returns {Promise<object>} A track
+ */
+export async function getTrack(token, id, market=null) {
+    const params = [];
+    if (market) params.push(`market=${market}`);
+    const query = buildQueryString(params);
+    return await parseJSON(fetch(`${baseURL}/tracks/${id}` + query, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }));
+}
+
 export async function getSeveralTracks() {}
 export async function getUsersSavedTracks() {}
 export async function saveTracksForCurrentUser() {}
@@ -697,5 +773,7 @@ async function parseJSON(result) {
  * @returns {string} A query string
  */
 function buildQueryString(params) {
-    return params.length > 0 ? `?${params.join("&")}` : "";
+    if (params.length == 0) return "";
+    const urlEncodedParams = params.map(param => encodeURIComponent(param));
+    return `?${urlEncodedParams.join("&")}`;
 }
