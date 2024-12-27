@@ -52,8 +52,16 @@ async function redirect() {
     }
 }
 
+function getToken() {
+    return sessionStorage.getItem("access_token");
+}
+
+function refreshToken() {
+    
+}
+
 async function debugAction() {
-    let data = await Spotify.getUsersTopItems(sessionStorage.getItem("access_token"), "artists", "short_term");
+    let data = await Spotify.getUsersTopItems(getToken(), "artists", "short_term");
     document.getElementById("debug-data").innerHTML = data["items"][0]["name"];
 }
 
