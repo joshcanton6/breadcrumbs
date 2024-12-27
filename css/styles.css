@@ -14,23 +14,24 @@ body {
     background-color: var(--spotify-black);
     color: var(--spotify-white);
     font-family: sans-serif;
+    margin: 50px 15px 75px;
 }
 
 img {
-    margin: 15px 15px 15px 15px;
+    margin: 15px;
 }
 
 /* #endregion Type selectors */
 /* #region Class selectors */
 
-img.rounded {
+.rounded {
     border-radius: 15%;
 }
 
 /* #endregion Class selectors */
 /* #region ID selectors */
 
-#start-page {
+#start-page-content {
     margin: auto;
     width: 60%;
     text-align: center;
