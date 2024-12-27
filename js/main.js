@@ -12,41 +12,45 @@ const debugButton = document.getElementById("debug-button");
 // #region Functions
 
 function login() {
-    const scope = "user-top-read";
-
-    window.location.href = "https://accounts.spotify.com/authorize" +
-        "?client_id=" + clientID +
-        "&response_type=code" +
-        "&redirect_uri=" + encodeURIComponent(redirectURI) +
-        "&scope=" + encodeURIComponent(scope) +
-        "&show_dialog=true";
+    const scopes = [
+        "user-top-read"
+    ];
+    const scope = scopes.join(" ");
+    const params = [
+        `client_id=${clientID}`,
+        "response_type=code",
+        `redirect_uri=${redirectURI}`,
+        `scope=${scope}`,
+        "show_dialog=true"
+    ];
+    const urlEncodedParams = params.map(param => encodeURIComponent(param));
+    const options = `?${urlEncodedParams.join("&")}`
+    window.location.href = "https://accounts.spotify.com/authorize" + options;
 }
 
 async function redirect() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has("error")) {
-        document.getElementById("redirect-message").innerHTML = "Error: " + urlParams.get("error");
+        document.getElementById("redirect-message").innerHTML = `Error: ${urlParams.get("error")}`;
     }
-
     if (urlParams.has("code")) {
         const response = await fetch("https://accounts.spotify.com/api/token", {
             method: "POST",
-            body: "grant_type=authorization_code" +
-                "&code=" + urlParams.get("code") +
-                "&redirect_uri=" + encodeURIComponent(redirectURI),
+            body: [
+                "grant_type=authorization_code",
+                `code=${urlParams.get("code")}`,
+                `redirect_uri=${encodeURIComponent(redirectURI)}`
+            ].join("&"),
             headers: {
                 "content-type": "application/x-www-form-urlencoded",
-                "Authorization": "Basic " + btoa(clientID + ":2f409da2aebf417893ff056f9b98c3ea")
+                "Authorization": `Basic ${btoa(clientID + ":2f409da2aebf417893ff056f9b98c3ea")}`
             }
         });
-
         const token = await response.json();
-
         sessionStorage.setItem("access_token", token["access_token"]);
         sessionStorage.setItem("refresh_token", token["refresh_token"]);
         sessionStorage.setItem("expires_at", Math.floor(Date.now() / 1000) + token["expires_in"]);
-
-        window.location.href = home + "/app";
+        window.location.href = `${home}/app`;
     }
 }
 
