@@ -16,16 +16,14 @@ function login() {
         "user-top-read"
     ];
     const scope = scopes.join(" ");
-    const params = [
+    const authOptions = `?${[
         `client_id=${clientID}`,
         "response_type=code",
-        `redirect_uri=${redirectURI}`,
-        `scope=${scope}`,
+        `redirect_uri=${encodeURIComponent(redirectURI)}`,
+        `scope=${encodeURIComponent(scope)}`,
         "show_dialog=true"
-    ];
-    const urlEncodedParams = params.map(param => encodeURIComponent(param));
-    const options = `?${urlEncodedParams.join("&")}`
-    window.location.href = "https://accounts.spotify.com/authorize" + options;
+    ].join("&")}`;
+    window.location.href = "https://accounts.spotify.com/authorize" + authOptions;
 }
 
 async function redirect() {
@@ -43,7 +41,7 @@ async function redirect() {
             ].join("&"),
             headers: {
                 "content-type": "application/x-www-form-urlencoded",
-                "Authorization": `Basic ${btoa(clientID + ":2f409da2aebf417893ff056f9b98c3ea")}`
+                "Authorization": `Basic ${btoa(`${clientID}:2f409da2aebf417893ff056f9b98c3ea`)}`
             }
         });
         const token = await response.json();
