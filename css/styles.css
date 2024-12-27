@@ -41,7 +41,8 @@ img {
     font-weight: bold;
     padding: 25px;
     text-align: center;
-    text-decoration: none;
+    cursor: pointer;
+    border: none;
 }
 
 #start-page-content {
