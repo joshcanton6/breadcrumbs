@@ -74,7 +74,7 @@ async function refreshToken() {
 }
 
 async function debugAction() {
-    let data = await Spotify.getUsersTopItems(getToken(), "artists", "short_term");
+    let data = await Spotify.getUsersTopItems(await getToken(), "artists", "short_term");
     document.getElementById("debug-data").innerHTML = data["items"][0]["name"];
 }
 
