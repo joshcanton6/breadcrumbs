@@ -33,6 +33,17 @@ img {
 /* #endregion Class selectors */
 /* #region ID selectors */
 
+#spotify-login-button {
+    background-color: var(--spotify-green);
+    border-radius: 50px;
+    color: var(--spotify-white);
+    font-size: 25px;
+    font-weight: bold;
+    padding: 25px;
+    text-align: center;
+    text-decoration: none;
+}
+
 #start-page-content {
     margin: auto;
     width: 75%;
