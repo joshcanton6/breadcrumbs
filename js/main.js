@@ -28,7 +28,7 @@ async function redirect() {
         document.getElementById("redirect-message").innerHTML = `Error: ${urlParams.get("error")}`;
     }
     if (urlParams.has("code")) {
-        const token = (await fetch("https://accounts.spotify.com/api/token", {
+        const response = await fetch("https://accounts.spotify.com/api/token", {
             method: "POST",
             headers: {
                 "content-type": "application/x-www-form-urlencoded",
@@ -39,7 +39,8 @@ async function redirect() {
                 "code": urlParams.get("code"),
                 redirect_uri
             })
-        })).json();
+        });
+        const token = await response.json();
         sessionStorage.setItem("access_token", token["access_token"]);
         sessionStorage.setItem("refresh_token", token["refresh_token"]);
         sessionStorage.setItem("expires_at", Math.floor(Date.now() / 1000) + token["expires_in"]);
@@ -55,7 +56,7 @@ async function getToken() {
 }
 
 async function refreshToken() {
-    const token = (await fetch("https://accounts.spotify.com/api/token", {
+    const response = await fetch("https://accounts.spotify.com/api/token", {
         method: "POST",
         headers: {
             "content-type": "application/x-www-form-urlencoded"
@@ -65,7 +66,8 @@ async function refreshToken() {
             "refresh_token": sessionStorage.getItem("refresh_token"),
             client_id
         })
-    })).json();
+    });
+    const token = await response.json();
     sessionStorage.setItem("access_token", token["access_token"]);
     sessionStorage.setItem("refresh_token", token["refresh_token"]);
     sessionStorage.setItem("expires_at", Math.floor(Date.now() / 1000) + token["expires_in"]);
