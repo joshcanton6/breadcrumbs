@@ -16,6 +16,12 @@ body {
     font-family: sans-serif;
 }
 
+#start-page {
+    margin: auto;
+    width: 60%;
+    text-align: center;
+}
+
 /* #endregion Type selectors */
 
 /* #region Class selectors */
