@@ -21,11 +21,13 @@ img {
 }
 
 /* #endregion Type selectors */
-
 /* #region Class selectors */
 
-/* #endregion Class selectors */
+img.rounded {
+    border-radius: 15%;
+}
 
+/* #endregion Class selectors */
 /* #region ID selectors */
 
 #start-page {
