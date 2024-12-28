@@ -32,7 +32,7 @@ export async function getAlbum(token, id, market=null) {
  */
 export async function getSeveralAlbums(token, ids, market=null) {
     const query = new URLSearchParams({
-        ids: ids,
+        ids,
         ...(market && {market})
     });
     return (await fetch(`${baseURL}/albums?${query}`, {
