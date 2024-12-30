@@ -503,7 +503,7 @@ export async function addItemsToPlaylist(token, playlist_id, uris, position=null
  * Remove one or more items from a user's playlist.
  * @param {string} token The access token which contains the credentials and permissions that can be used to access a given resource or user's data.
  * @param {string} playlist_id The Spotify ID of the playlist.
- * @param {Track[]} tracks An array of objects containing Spotify URIs of the tracks or episodes to remove. A maximum of 100 objects can be sent at once.
+ * @param {object[]} tracks An array of objects containing Spotify URIs of the tracks or episodes to remove. A maximum of 100 objects can be sent at once.
  * @param {string} snapshot_id The playlist's snapshot ID against which you want to make the changes. The API will validate that the specified items exist and in the specified positions and make the changes, even if more recent changes have been made to the playlist.
  * @returns {Promise<object>} A snapshot ID for the playlist
  */
@@ -985,8 +985,3 @@ export async function checkIfCurrentUserFollowsPlaylist(token, playlist_id) {
         }
     })).json();
 }
-
-/**
- * @typedef {Object} Track
- * @property {string} uri
- */
