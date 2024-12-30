@@ -7,7 +7,7 @@ const redirect_uri = home + "/redirect";
 const client_id = "70d3f1361abf4e1ab9e9e64089fabc36";
 const scope = "user-top-read";
 const spotifyLoginButton = document.getElementById("spotify-login-button");
-const debugButton = document.getElementById("debug-button");
+window.poke = poke;
 
 // #endregion Constants
 // #region Functions
@@ -73,9 +73,9 @@ async function refreshToken() {
     sessionStorage.setItem("expires_at", Math.floor(Date.now() / 1000) + token["expires_in"]);
 }
 
-async function debugAction() {
+async function poke() {
     let data = await Spotify.getUsersTopItems(await getToken(), "artists", "short_term");
-    document.getElementById("debug-data").innerHTML = data["items"][0]["name"];
+    console.log(data["items"][0]["name"]);
 }
 
 // #endregion Functions
@@ -83,6 +83,5 @@ async function debugAction() {
 
 if (spotifyLoginButton) spotifyLoginButton.addEventListener("click", login);
 if (window.location.origin + window.location.pathname == redirect_uri) redirect();
-if (debugButton) debugButton.addEventListener("click", debugAction);
 
 // #endregion Listeners
