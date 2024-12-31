@@ -41,18 +41,18 @@ async function redirect() {
             })
         });
         const token = await response.json();
-        sessionStorage.setItem("access_token", token["access_token"]);
-        sessionStorage.setItem("refresh_token", token["refresh_token"]);
-        sessionStorage.setItem("expires_at", Math.floor(Date.now() / 1000) + token["expires_in"]);
+        localStorage.setItem("access_token", token["access_token"]);
+        localStorage.setItem("refresh_token", token["refresh_token"]);
+        localStorage.setItem("expires_at", Math.floor(Date.now() / 1000) + token["expires_in"]);
         window.location.href = `${home}/app`;
     }
 }
 
 async function getToken() {
-    if (sessionStorage.getItem("expires_at") - Math.floor(Date.now() / 1000) <= 0) {
+    if (localStorage.getItem("expires_at") - Math.floor(Date.now() / 1000) <= 0) {
         await refreshToken();
     }
-    return sessionStorage.getItem("access_token");
+    return localStorage.getItem("access_token");
 }
 
 async function refreshToken() {
@@ -64,14 +64,14 @@ async function refreshToken() {
         },
         body: new URLSearchParams({
             "grant_type": "refresh_token",
-            "refresh_token": sessionStorage.getItem("refresh_token"),
+            "refresh_token": localStorage.getItem("refresh_token"),
             client_id
         })
     });
     const token = await response.json();
-    sessionStorage.setItem("access_token", token["access_token"]);
-    sessionStorage.setItem("refresh_token", token["refresh_token"]);
-    sessionStorage.setItem("expires_at", Math.floor(Date.now() / 1000) + token["expires_in"]);
+    localStorage.setItem("access_token", token["access_token"]);
+    localStorage.setItem("refresh_token", token["refresh_token"]);
+    localStorage.setItem("expires_at", Math.floor(Date.now() / 1000) + token["expires_in"]);
 }
 
 async function poke() {
