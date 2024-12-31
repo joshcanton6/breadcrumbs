@@ -31,7 +31,7 @@ async function redirect() {
         const response = await fetch("https://accounts.spotify.com/api/token", {
             method: "POST",
             headers: {
-                "content-type": "application/x-www-form-urlencoded",
+                "Content-Type": "application/x-www-form-urlencoded",
                 "Authorization": `Basic ${btoa(`${client_id}:2f409da2aebf417893ff056f9b98c3ea`)}`
             },
             body: new URLSearchParams({
@@ -59,7 +59,8 @@ async function refreshToken() {
     const response = await fetch("https://accounts.spotify.com/api/token", {
         method: "POST",
         headers: {
-            "content-type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": `Basic ${btoa(`${client_id}:2f409da2aebf417893ff056f9b98c3ea`)}`
         },
         body: new URLSearchParams({
             "grant_type": "refresh_token",
