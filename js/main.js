@@ -24,9 +24,6 @@ function login() {
 
 async function redirect() {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has("error")) {
-        document.getElementById("redirect-message").innerHTML = `Error: ${urlParams.get("error")}`;
-    }
     if (urlParams.has("code")) {
         const response = await fetch("https://accounts.spotify.com/api/token", {
             method: "POST",
@@ -45,6 +42,12 @@ async function redirect() {
         localStorage.setItem("refresh_token", token["refresh_token"]);
         localStorage.setItem("expires_at", Math.floor(Date.now() / 1000) + token["expires_in"]);
         window.location.href = `${home}/app`;
+    }
+    else if (urlParams.has("error")) {
+        document.getElementById("redirect-message").innerHTML = `Error: ${urlParams.get("error")}`;
+    }
+    else {
+        window.location.href = home;
     }
 }
 
