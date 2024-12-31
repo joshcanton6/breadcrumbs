@@ -7,7 +7,6 @@ const redirect_uri = home + "/redirect";
 const client_id = "70d3f1361abf4e1ab9e9e64089fabc36";
 const scope = "user-top-read";
 const spotifyLoginButton = document.getElementById("spotify-login-button");
-window.poke = poke;
 
 // #endregion Constants
 // #region Functions
@@ -77,14 +76,27 @@ async function refreshToken() {
     localStorage.setItem("expires_at", Math.floor(Date.now() / 1000) + token["expires_in"]);
 }
 
+async function insertTopArtists() {
+    const topArtists = await Spotify.getUsersTopItems(await getToken(), "artists", "short_term", 10);
+    let innerHTMLContent = "";
+    for (const artist of topArtists["items"]) {
+        innerHTMLContent += `
+            <tr>
+                <td><input type="checkbox" name="artist" value="${artist["id"]}"></td><td>${artist["name"]}</td>
+            </tr>
+        `
+    }
+    document.getElementById("top-artists").innerHTML = innerHTMLContent;
+}
+
 async function poke() {
-    let data = await Spotify.getUsersTopItems(await getToken(), "artists", "short_term");
-    console.log(data["items"][0]["name"]);
+    /* edit this function in the console for testing/debugging */
 }
 
 // #endregion Functions
 // #region Listeners
 
+window.poke = poke;
 if (spotifyLoginButton) spotifyLoginButton.addEventListener("click", login);
 if (window.location.origin + window.location.pathname == redirect_uri) redirect();
 
