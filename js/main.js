@@ -1,4 +1,5 @@
-import * as Spotify from "./spotify.js"
+//import * as Spotify from "./spotify.js"
+import * as Spotify from "https://joshcanton6.github.io/JSpify/jspify.js"
 
 // #region Constants
 
