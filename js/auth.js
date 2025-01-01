@@ -7,6 +7,7 @@ export const client_id = "70d3f1361abf4e1ab9e9e64089fabc36";
  * @param {string} code The code used to request an access token. Required when `grant_type` is `authorization_code`.
  */
 export async function fetchToken(grant_type, code=null) {
+    let body;
     if (grant_type === "authorization_code") body = new URLSearchParams({grant_type, code, redirect_uri});
     else if (grant_type === "refresh_token") body = new URLSearchParams({
         grant_type,
