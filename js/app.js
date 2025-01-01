@@ -1,5 +1,5 @@
 import * as Spotify from "./spotify.js"
-import * as OAuth from "./auth.js"
+import * as OAuth from "./oauth.js"
 
 async function insertTopArtists() {
     const topArtists = await Spotify.getUsersTopItems(await OAuth.getToken(), "artists", "short_term", 10);

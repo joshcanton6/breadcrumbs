@@ -1,4 +1,4 @@
-import * as OAuth from "./auth.js"
+import * as OAuth from "./oauth.js"
 
 const home = "https://joshcanton6.github.io/breadcrumbs"
 const redirect_uri = OAuth.redirect_uri;
