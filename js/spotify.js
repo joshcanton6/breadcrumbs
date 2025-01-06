@@ -985,3 +985,17 @@ export async function checkIfCurrentUserFollowsPlaylist(token, playlist_id) {
         }
     })).json();
 }
+
+/**
+ * Get the next page of a set of items.
+ * @param {string} next URL to the next page of items.
+ * @returns {Promise<object>} A paged set of objects.
+ */
+export async function getNext(next) {
+    return (await fetch(next, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })).json();
+}
